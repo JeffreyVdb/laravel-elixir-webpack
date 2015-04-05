@@ -21,7 +21,7 @@ elixir.extend(PLUGIN_NAME, function (src, dest, options) {
       };
 
   options = _.extend(defaultOptions, options);
-  src = "./" + utilities.buildGulpSrc(src, options.srcDir);
+  src = utilities.buildGulpSrc(src, options.srcDir);
   dest = dest || config.jsOutput;
 
   gulp.task(PLUGIN_NAME, function () {
