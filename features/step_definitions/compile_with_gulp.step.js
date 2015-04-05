@@ -62,4 +62,30 @@ module.exports = function () {
         }
       })
     });
+
+  this.Then(/^there should be subdirectory "([^"]*)" in the destination directory$/,
+    function (subDir, callback) {
+      destDir = path.resolve(__dirname, '../../fixtures', destDir, subDir);
+      fs.exists(destDir, function (exists) {
+        if (exists) {
+          callback();
+        }
+        else {
+          callback.fail(new Error("subdirectory was not created"));
+        }
+      });
+    });
+
+  this.Then(/^the files "([^"]*)" should be present in this directory$/, function (files, callback) {
+    var files = files.split(/[,]\s*/);
+    files.forEach(function (file) {
+      try {
+        fs.openSync(path.join(destDir, file), 'r');
+      } catch (ex) {
+        callback.fail(new Error("file does not exist: " + file));
+      }
+    });
+
+    callback();
+  });
 };
