@@ -1,3 +1,5 @@
+const PLUGIN_NAME = 'webpack';
+
 var gulp         = require('gulp'),
     webpack      = require('gulp-webpack'),
     uglify       = require('gulp-uglify'),
@@ -8,8 +10,7 @@ var gulp         = require('gulp'),
     utilities    = require('laravel-elixir/ingredients/commands/Utilities'),
     notification = require('laravel-elixir/ingredients/commands/Notification');
 
-elixir.extend('webpack', function (src, dest, options) {
-
+elixir.extend(PLUGIN_NAME, function (src, dest, options) {
   var config = this,
       defaultOptions = {
         debug: !config.production,
@@ -23,7 +24,7 @@ elixir.extend('webpack', function (src, dest, options) {
   src = "./" + utilities.buildGulpSrc(src, options.srcDir);
   dest = dest || config.jsOutput;
 
-  gulp.task('webpack', function () {
+  gulp.task(PLUGIN_NAME, function () {
 
     var onError = function (e) {
       new notification().error(e, 'Webpack Compilation Failed!');
@@ -43,7 +44,7 @@ elixir.extend('webpack', function (src, dest, options) {
       .pipe(new notification().message('Webpack Compiled!'));
   });
 
-  this.registerWatcher('webpack', options.srcDir + '/**/*.js');
+  this.registerWatcher(PLUGIN_NAME, options.srcDir + '/**/*.js');
 
-  return this.queueTask('webpack');
+  return this.queueTask(PLUGIN_NAME);
 });
